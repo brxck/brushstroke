@@ -5,5 +5,6 @@ class CreateCanvases < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+    add_index :canvases, :code, unique: true
   end
 end

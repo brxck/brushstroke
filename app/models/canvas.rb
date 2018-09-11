@@ -4,6 +4,9 @@ class Canvas < ApplicationRecord
   private
 
   def generate_code
-    self.code = SecureRandom.hex(2)
+    self.code = loop do
+      hex = SecureRandom.hex(2)
+      break hex unless Canvas.exists?(code: hex)
+    end
   end
 end
