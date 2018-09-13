@@ -3,7 +3,7 @@ class RoomsController < ApplicationController
 
   def create
     @room = Room.create
-    redirect_to @room.path
+    redirect_to @room
   end
 
   def show
@@ -22,7 +22,7 @@ class RoomsController < ApplicationController
   def search
     @room = Room.find_by(code: params[:code])
     if @room
-      redirect_to @room.path
+      redirect_to @room
     else
       flash.now[:danger] = "Room not found"
       render :find
