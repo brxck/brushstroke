@@ -3,4 +3,6 @@ Rails.application.routes.draw do
 
   get "/c/:code", to: "rooms#show", as: "room"
   post "/search", to: "rooms#search"
+
+  mount ActionCable.server, at: '/cable'
 end

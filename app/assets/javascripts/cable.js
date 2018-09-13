@@ -3,11 +3,11 @@
 //
 //= require action_cable
 //= require_self
+//= require gyronorm/dist/gyronorm.complete
 //= require_tree ./channels
 
-(function() {
-  this.App || (this.App = {});
+;(function () {
+  this.App || (this.App = {})
 
-  App.cable = ActionCable.createConsumer();
-
-}).call(this);
+  App.cable = ActionCable.createConsumer()
+}.call(this))
