@@ -1,14 +1,14 @@
 class Room < ApplicationRecord
   before_create :generate_code
 
-  def path
-    "/c/#{self.code}"
-  end
-
   def self.path(code)
     "/c/#{code}"
   end
-  
+
+  def to_param
+    code
+  end
+
   private
 
 
