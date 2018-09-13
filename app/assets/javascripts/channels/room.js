@@ -43,5 +43,8 @@ App.room = App.cable.subscriptions.create("RoomChannel", {
 
     horizontalDegree = (horizontalDegree + 35) % 360
     pointer.style.right = Math.round((horizontalDegree / 70) * 100) + "vw"
+
+    pointer.style.transform =
+      "rotate(" + data["data"]["gyro"]["do"]["gamma"] + "deg)"
   }
 })
