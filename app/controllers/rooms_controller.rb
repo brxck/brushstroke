@@ -10,7 +10,7 @@ class RoomsController < ApplicationController
     @room = Room.find_by(code: params[:code])
     session[:code] = @room.code
 
-    render :paint if browser.device.mobile? || browser.device.tablet?
+    render :remote if browser.device.mobile? || browser.device.tablet?
   end
 
   def edit
