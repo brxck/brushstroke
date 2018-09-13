@@ -1,0 +1,12 @@
+#pointer {
+  z-index: 100;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: blue;
+  display: block;
+  transition: all 0.1s;
+
+  right: 50vw;
+  bottom: 50vh;
+}
