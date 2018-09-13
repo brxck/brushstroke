@@ -1,14 +1,14 @@
-class CanvasesController < ApplicationController
+class RoomsController < ApplicationController
   before_action :sort_browsers, only: :create
 
   def create
-    @canvas = Canvas.create
-    redirect_to helpers.code_path(@canvas.code)
+    @room = Room.create
+    redirect_to helpers.code_path(@room.code)
   end
 
   def show
-    @canvas = Canvas.find_by(code: params[:code])
-    session[:code] = @canvas.code
+    @room = Room.find_by(code: params[:code])
+    session[:code] = @room.code
 
     render :paint if browser.device.mobile? || browser.device.tablet?
   end
@@ -20,11 +20,11 @@ class CanvasesController < ApplicationController
   end
 
   def search
-    @canvas = Canvas.find_by(code: params[:code])
-    if @canvas
-      redirect_to helpers.code_path(@canvas.code)
+    @room = Room.find_by(code: params[:code])
+    if @room
+      redirect_to helpers.code_path(@room.code)
     else
-      flash.now[:danger] = "canvas not found"
+      flash.now[:danger] = "Room not found"
       render :find
     end
   end

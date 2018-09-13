@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  root "canvases#create"
+  root "rooms#create"
 
-  get "/c/:code", to: "canvases#show", as: "canvas"
-  post "/search", to: "canvases#search"
+  get "/c/:code", to: "rooms#show", as: "room"
+  post "/search", to: "rooms#search"
 end
