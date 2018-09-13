@@ -46,5 +46,13 @@ App.room = App.cable.subscriptions.create("RoomChannel", {
 
     pointer.style.transform =
       "rotate(" + data["data"]["gyro"]["do"]["gamma"] + "deg)"
+
+    let acceleration = Math.max(
+      data["data"]["gyro"]["dm"]["beta"],
+      data["data"]["gyro"]["dm"]["alpha"]
+    )
+    acceleration = Math.abs(acceleration)
+    acceleration = (acceleration / 100) * 255
+    pointer.style["background-color"] = "hsl(" + acceleration + ", 100%, 50%)"
   }
 })
