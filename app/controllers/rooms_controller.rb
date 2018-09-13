@@ -3,7 +3,7 @@ class RoomsController < ApplicationController
 
   def create
     @room = Room.create
-    redirect_to helpers.code_path(@room.code)
+    redirect_to @room.path
   end
 
   def show
@@ -22,7 +22,7 @@ class RoomsController < ApplicationController
   def search
     @room = Room.find_by(code: params[:code])
     if @room
-      redirect_to helpers.code_path(@room.code)
+      redirect_to @room.path
     else
       flash.now[:danger] = "Room not found"
       render :find
@@ -33,7 +33,7 @@ class RoomsController < ApplicationController
 
   def sort_browsers
     if session[:code]
-      redirect_to helpers.code_path(session[:code])
+      redirect_to Room.path(session[:code])
     elsif browser.device.mobile? || browser.device.tablet?
       render :find
     end
