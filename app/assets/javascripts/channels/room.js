@@ -24,25 +24,11 @@ App.room = App.cable.subscriptions.create("RoomChannel", {
     // Called when there's incoming data on the websocket for this channel
     dataFrame.innerHTML = JSON.stringify(data)
 
-    let verticalDegree = data["data"]["gyro"]["do"]["beta"]
-    if (verticalDegree > 25) {
-      verticalDegree = 25
-    } else if (verticalDegree < -25) {
-      verticalDegree = -25
-    }
+    pointer.style.bottom =
+      angleToPosition(data["data"]["gyro"]["do"]["beta"], 50) + "vh"
 
-    verticalDegree += 25
-    pointer.style.bottom = (verticalDegree / 50) * 100 + "vh"
-
-    let horizontalDegree = data["data"]["gyro"]["do"]["alpha"]
-    horizontalDegree = (horizontalDegree + 35) % 360
-    if (horizontalDegree < 0) {
-      horizontalDegree = 0
-    } else if (horizontalDegree > 70) {
-      horizontalDegree = 70
-    }
-
-    pointer.style.right = (horizontalDegree / 70) * 100 + "vw"
+    pointer.style.right =
+      angleToPosition(data["data"]["gyro"]["do"]["alpha"], 70) + "vw"
 
     pointer.style.transform =
       "rotate(" + data["data"]["gyro"]["do"]["gamma"] + "deg)"
@@ -56,3 +42,16 @@ App.room = App.cable.subscriptions.create("RoomChannel", {
     pointer.style["background-color"] = "hsl(" + acceleration + ", 100%, 50%)"
   }
 })
+
+function angleToPosition (degree, range) {
+  degree += range / 2
+  degree %= 360
+
+  if (degree > range) {
+    degree = range
+  } else if (degree < 0) {
+    degree = 0
+  }
+
+  return (degree / range) * 100
+}
