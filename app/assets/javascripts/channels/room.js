@@ -32,7 +32,7 @@ App.room = App.cable.subscriptions.create("RoomChannel", {
     }
 
     verticalDegree += 25
-    pointer.style.bottom = Math.round((verticalDegree / 50) * 100) + "vh"
+    pointer.style.bottom = (verticalDegree / 50) * 100 + "vh"
 
     let horizontalDegree = data["data"]["gyro"]["do"]["alpha"]
     if (horizontalDegree > 35 && horizontalDegree < 70) {
@@ -42,7 +42,7 @@ App.room = App.cable.subscriptions.create("RoomChannel", {
     }
 
     horizontalDegree = (horizontalDegree + 35) % 360
-    pointer.style.right = Math.round((horizontalDegree / 70) * 100) + "vw"
+    pointer.style.right = (horizontalDegree / 70) * 100 + "vw"
 
     pointer.style.transform =
       "rotate(" + data["data"]["gyro"]["do"]["gamma"] + "deg)"
