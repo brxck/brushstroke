@@ -35,13 +35,13 @@ App.room = App.cable.subscriptions.create("RoomChannel", {
     pointer.style.bottom = (verticalDegree / 50) * 100 + "vh"
 
     let horizontalDegree = data["data"]["gyro"]["do"]["alpha"]
-    if (horizontalDegree > 35 && horizontalDegree < 70) {
-      horizontalDegree = 35
-    } else if (horizontalDegree < 325 && horizontalDegree > 70) {
-      horizontalDegree = 325
+    horizontalDegree = (horizontalDegree + 35) % 360
+    if (horizontalDegree < 0) {
+      horizontalDegree = 0
+    } else if (horizontalDegree > 70) {
+      horizontalDegree = 70
     }
 
-    horizontalDegree = (horizontalDegree + 35) % 360
     pointer.style.right = (horizontalDegree / 70) * 100 + "vw"
 
     pointer.style.transform =
