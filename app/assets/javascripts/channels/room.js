@@ -27,10 +27,10 @@ function subscribeRoom () {
     received: function (data) {
       // Update pointer location and appearance
       pointer.style.bottom =
-        angleToPosition(data["data"]["gyro"]["do"]["beta"], 50) + "vh"
+        angleToPosition(data["data"]["gyro"]["do"]["beta"], 25, 75, 50) + "vh"
 
       pointer.style.right =
-        angleToPosition(data["data"]["gyro"]["do"]["alpha"], 70) + "vw"
+        angleToPosition(data["data"]["gyro"]["do"]["alpha"], 45, 135, 90) + "vw"
 
       pointer.style.transform =
         "rotate(" + data["data"]["gyro"]["do"]["gamma"] + "deg)"
@@ -56,17 +56,17 @@ function subscribeRoom () {
   })
 }
 
-function angleToPosition (degree, range) {
-  degree += range / 2
+function angleToPosition (degree, min, max, offset) {
+  degree += offset
   degree %= 360
 
-  if (degree > range) {
-    degree = range
-  } else if (degree < 0) {
-    degree = 0
+  if (degree > max) {
+    degree = max
+  } else if (degree < min) {
+    degree = min
   }
 
-  return (degree / range) * 100
+  return ((degree - min) / (max - min)) * 100
 }
 
 function printDebug (data) {
