@@ -7,13 +7,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function subscribeRoom () {
   let pointer
+  let canvas
+  let context
 
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
       pointer = document.getElementById("pointer")
+      canvas = document.getElementById("canvas")
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+
+      context = canvas.getContext("2d")
+      context.moveTo(canvas.width / 2, canvas.height / 2)
     },
 
     received: function (data) {
+      // Update pointer location and appearance
       pointer.style.bottom =
         angleToPosition(data["data"]["gyro"]["do"]["beta"], 50) + "vh"
 
@@ -30,6 +39,10 @@ function subscribeRoom () {
       acceleration = Math.abs(acceleration)
       acceleration = (acceleration / 100) * 255
       pointer.style["background-color"] = "hsl(" + acceleration + ", 100%, 50%)"
+
+      // Draw on canvas
+      context.lineTo(pointer.offsetLeft, pointer.offsetTop)
+      context.stroke()
     }
   })
 }
