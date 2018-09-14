@@ -4,6 +4,8 @@
   "dependencies": {
     "@rails/webpacker": "3.5",
     "bulma": "^0.7.1",
+    "bulma-slider": "^2.0.0",
+    "bulma-switch": "^2.0.0",
     "gyronorm": "^2.0.6",
     "stimulus": "^1.1.0"
   },

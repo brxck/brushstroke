@@ -1,5 +1,12 @@
 #remote
+.container.has-text-centered
+  br
+  h1.title = @room.code
 
-h1.title = @room.code
-
-button.button#draw draw
+  .field
+    button#draw.button.is-large.is-dark.is-rounded draw
+  .field
+    input#lock.switch.is-rounded.is-large.is-info(type="checkbox")
+    label.label(for="draw-toggle") Lock
+  .field
+    input#size.slider.is-large.is-dark.is-circle.is-fullwidth(type="range")
