@@ -50,6 +50,8 @@ function subscribeRoom () {
       } else {
         context.moveTo(pointer.offsetLeft, pointer.offsetTop)
       }
+
+      printDebug(data)
     }
   })
 }
@@ -65,4 +67,14 @@ function angleToPosition (degree, range) {
   }
 
   return (degree / range) * 100
+}
+
+function printDebug (data) {
+  const view = document.getElementById("debug")
+  data = data["data"]["gyro"]["do"]
+  view.innerHTML = `
+    alpha: ${data["alpha"]}<br>
+    beta: ${data["beta"]}<br>
+    gamma: ${data["gamma"]}<br>
+  `
 }
