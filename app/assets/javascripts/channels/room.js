@@ -19,6 +19,9 @@ function subscribeRoom () {
 
       context = canvas.getContext("2d")
       context.moveTo(canvas.width / 2, canvas.height / 2)
+      context.lineWidth = 10
+      context.lineCap = "round"
+      context.lineJoin = "round"
     },
 
     received: function (data) {
