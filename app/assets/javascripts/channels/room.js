@@ -41,8 +41,12 @@ function subscribeRoom () {
       pointer.style["background-color"] = "hsl(" + acceleration + ", 100%, 50%)"
 
       // Draw on canvas
-      context.lineTo(pointer.offsetLeft, pointer.offsetTop)
-      context.stroke()
+      if (data["data"]["draw"] === true) {
+        context.lineTo(pointer.offsetLeft, pointer.offsetTop)
+        context.stroke()
+      } else {
+        context.moveTo(pointer.offsetLeft, pointer.offsetTop)
+      }
     }
   })
 }
