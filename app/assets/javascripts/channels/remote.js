@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function subscribeRemote () {
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
-      alert("success")
       const gyro = new GyroNorm()
       gyro.init().then(() => {
         gyro.start(data => {
