@@ -13,7 +13,8 @@ class RoomsController < ApplicationController
     render :remote if browser.device.mobile? || browser.device.tablet?
   end
 
-  def edit
+  def remote
+    @room = Room.find_by(code: params[:code])
   end
 
   def find
