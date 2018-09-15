@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function subscribeRemote () {
   let draw = false
+  let fill = false
   let lock = false
   let size = document.getElementById("size").value
   let color = "black"
@@ -25,7 +26,8 @@ function subscribeRemote () {
               drawing: draw,
               lock: lock,
               size: size,
-              color: color
+              color: color,
+              fill: fill
             },
             actions: {
               clear: clear,
@@ -62,6 +64,11 @@ function subscribeRemote () {
   const lockToggle = document.getElementById("lock")
   lockToggle.addEventListener("change", e => {
     lock = e.target.checked
+  })
+
+  const fillToggle = document.getElementById("fill")
+  fillToggle.addEventListener("change", e => {
+    fill = e.target.checked
   })
 
   const sizeSlider = document.getElementById("size")

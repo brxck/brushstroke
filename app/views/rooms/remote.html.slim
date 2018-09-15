@@ -2,8 +2,13 @@
   h1.title = @room.code
 
   #buttons
-    input#lock.switch.is-rounded.is-large.is-info(type="checkbox")
-    label.label(for="lock") hold
+    .field.is-grouped
+      input#lock.switch.is-rounded.is-large.is-info(type="checkbox")
+      label.label(for="lock") hold
+
+      input#fill.switch.is-rounded.is-large.is-info(type="checkbox")
+      label.label(for="fill") fill
+
     .field.is-grouped
       button.button.is-rounded.is-medium.is-success#save save
       button.button.is-rounded.is-medium.is-danger#clear clear

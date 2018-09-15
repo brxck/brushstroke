@@ -74,6 +74,7 @@ function subscribeRoom () {
 
   function draw (data) {
     tempContext.strokeStyle = data["draw"]["color"]
+    tempContext.fillStyle = data["draw"]["color"]
     // Draw smooth lines using bezier curves, mishmash of these two sources:
     // perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves
     // codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
@@ -103,7 +104,12 @@ function subscribeRoom () {
     } else {
       // Redraw with only one stroke before committing to canvas
       tempContext.clearRect(0, 0, temp.width, temp.height)
+      if (data["draw"]["fill"] === true) {
+        tempContext.closePath()
+        tempContext.fill()
+      }
       tempContext.stroke()
+
       // Important to clear path so we don't keep stroking it
       tempContext.beginPath()
 
