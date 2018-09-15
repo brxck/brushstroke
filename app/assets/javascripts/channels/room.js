@@ -97,12 +97,14 @@ function subscribeRoom () {
       // Redraw with only one stroke before committing to canvas
       tempContext.clearRect(0, 0, temp.width, temp.height)
       tempContext.stroke()
+      // Important to clear path so we don't keep stroking it
+      tempContext.beginPath()
 
       // Commit to canvas
       context.drawImage(temp, 0, 0)
+
       tempContext.clearRect(0, 0, temp.width, temp.height)
       points.length = 0
-
       context.moveTo(pointer.offsetLeft, pointer.offsetTop)
     }
   }
