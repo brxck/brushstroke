@@ -116,11 +116,17 @@ function subscribeRoom () {
 
   function printDebug (data) {
     const view = document.getElementById("debug")
-    data = data["data"]["gyro"]["do"]
+    data = data["data"]["gyro"]
     view.innerHTML = `
-      alpha: ${data["alpha"]}<br>
-      beta: ${data["beta"]}<br>
-      gamma: ${data["gamma"]}<br>
+      Orientation:<br>
+      alpha: ${data["do"]["alpha"]}<br>
+      beta: ${data["do"]["beta"]}<br>
+      gamma: ${data["do"]["gamma"]}<br>
+      <br>
+      Motion:<br>
+      x: ${data["dm"]["x"]}<br>
+      y: ${data["dm"]["y"]}<br>
+      z: ${data["dm"]["z"]}<br>
     `
   }
 }
