@@ -27,21 +27,31 @@ function subscribeRoom () {
     received: function (data) {
       data = data["data"]
       updatePointer(data)
-      if (data["actions"]["tune"] === true) {
+
+      // Begin calibrating
+      if (data["draw"]["action"] === "tune") {
         showMessage("Tilt your phone toward each target and tap the draw area.")
         setTargetDisplay(0, true)
         setPointerDisplay(false)
         tuneCount = 4
+        // Calibrate targets
       } else if (tuneCount > 0 && data["draw"]["release"] === true) {
         let calibrated = tune(data, tuneCount)
         if (calibrated === true) {
           tuneCount -= 1
         }
+        // Clean up after calibrating
+        if (tuneCount === 0) {
+          hideMessage()
+          setPointerDisplay(true)
+        }
+      } else if (data["draw"]["action"] === "save") {
+        save()
+      } else if (data["draw"]["action"] === "clear") {
+        tempContext.clearRect(0, 0, temp.width, temp.height)
+        context.clearRect(0, 0, canvas.width, canvas.height)
       } else {
         draw(data)
-      }
-      if (data["actions"]["save"] === true) {
-        save()
       }
 
       // printDebug(data)
@@ -49,6 +59,8 @@ function subscribeRoom () {
   })
 
   function readyCanvases () {
+    // One temporary canvas for drawing the current line
+    // The other canvas for holding all the final work
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     temp.width = window.innerWidth
@@ -76,6 +88,8 @@ function subscribeRoom () {
   }
 
   function angleToPosition (degree, min, max, offset) {
+    // Shift values so we're dealing with a continuous range
+    // Plus an additional arbitrary amount to avoid wrapping the alpha angles
     degree += offset
     degree %= 360
 
@@ -91,7 +105,7 @@ function subscribeRoom () {
   function draw (data) {
     tempContext.strokeStyle = data["draw"]["color"]
     tempContext.fillStyle = data["draw"]["color"]
-    // Draw smooth lines using bezier curves, mishmash of these two sources:
+    // Draw smooth lines using quadratic curves, mishmash of these two sources:
     // perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves
     // codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
 
@@ -114,9 +128,6 @@ function subscribeRoom () {
 
       tempContext.lineWidth = data["draw"]["size"]
       tempContext.stroke()
-    } else if (data["actions"]["clear"] === true) {
-      tempContext.clearRect(0, 0, temp.width, temp.height)
-      context.clearRect(0, 0, canvas.width, canvas.height)
     } else {
       // Redraw with only one stroke before committing to canvas
       tempContext.clearRect(0, 0, temp.width, temp.height)
@@ -126,12 +137,10 @@ function subscribeRoom () {
       }
       tempContext.stroke()
 
-      // Important to clear path so we don't keep stroking it
-      tempContext.beginPath()
-
       // Commit to canvas
       context.drawImage(temp, 0, 0)
 
+      tempContext.beginPath() // Important to clear path so we don't keep stroking it
       tempContext.clearRect(0, 0, temp.width, temp.height)
       points.length = 0
       context.moveTo(pointer.offsetLeft, pointer.offsetTop)
@@ -175,8 +184,6 @@ function subscribeRoom () {
         case 1:
           ymin = (data["gyro"]["do"]["beta"] + 50) % 360
           setTargetDisplay(3, false)
-          hideMessage()
-          setPointerDisplay(true)
           return true
         default:
           return false
@@ -199,8 +206,6 @@ function subscribeRoom () {
     view.innerHTML += formatDebug(data["gyro"]["do"])
     view.innerHTML += "<br>Draw:<br>"
     view.innerHTML += formatDebug(data["draw"])
-    view.innerHTML += "<br>Actions:<br>"
-    view.innerHTML += formatDebug(data["actions"])
   }
 
   function formatDebug (data) {

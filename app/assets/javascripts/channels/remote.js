@@ -11,10 +11,8 @@ function subscribeRemote () {
   let lock = false
   let size = document.getElementById("size").value
   let color = "black"
-  let clear = false
-  let save = false
-  let tune = false
   let release = true
+  let action
 
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
@@ -30,20 +28,14 @@ function subscribeRemote () {
               size: size,
               color: color,
               fill: fill,
-              release: release
-            },
-            actions: {
-              clear: clear,
-              save: save,
-              tune: tune
+              release: release,
+              action: action
             }
           })
 
           release = !drawing
 
-          clear = false
-          save = false
-          tune = false
+          action = null
           // End loop //
         })
       })
@@ -60,17 +52,17 @@ function subscribeRemote () {
 
   const clearButton = document.getElementById("clear")
   clearButton.addEventListener("click", e => {
-    clear = true
+    action = "clear"
   })
 
   const saveButton = document.getElementById("save")
   saveButton.addEventListener("click", e => {
-    save = true
+    action = "save"
   })
 
   const tuneButton = document.getElementById("tune")
   tuneButton.addEventListener("click", e => {
-    tune = true
+    action = "tune"
   })
 
   const lockToggle = document.getElementById("lock")
