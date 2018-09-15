@@ -8,11 +8,11 @@ body {
   position: absolute;
   width: 10px;
   height: 10px;
-  background-color: hsl(100, 100%, 50%);
+  background-color: black;
   display: block;
-
   right: 50vw;
   bottom: 50vh;
+  border-radius: 50%;
 }
 
 #canvas,

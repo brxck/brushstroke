@@ -44,7 +44,7 @@ function subscribeRoom () {
         save()
       }
 
-      printDebug(data)
+      // printDebug(data)
     }
   })
 
@@ -63,19 +63,12 @@ function subscribeRoom () {
   function updatePointer (data) {
     pointer.style.bottom =
       angleToPosition(data["gyro"]["do"]["beta"], ymin, ymax, 50) + "vh"
-
     pointer.style.right =
       angleToPosition(data["gyro"]["do"]["alpha"], xmin, xmax, 90) + "vw"
-
     pointer.style.transform = "rotate(" + data["gyro"]["do"]["gamma"] + "deg)"
-
-    let acceleration = Math.max(
-      data["gyro"]["dm"]["beta"],
-      data["gyro"]["dm"]["alpha"]
-    )
-    acceleration = Math.abs(acceleration)
-    acceleration = (acceleration / 100) * 255
-    pointer.style["background-color"] = "hsl(" + acceleration + ", 100%, 50%)"
+    pointer.style["background-color"] = data["draw"]["color"]
+    pointer.style.width = data["draw"]["size"] + "px"
+    pointer.style.height = data["draw"]["size"] + "px"
   }
 
   function setPointerDisplay (boolean) {
