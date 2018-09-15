@@ -8,13 +8,19 @@ document.addEventListener("DOMContentLoaded", () => {
 function subscribeRemote () {
   let draw = false
   let lock = false
+  let size = document.getElementById("size").value
 
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
       const gyro = new GyroNorm()
       gyro.init().then(() => {
         gyro.start(data => {
-          this.perform("update", { gyro: data, draw: draw, lock: lock })
+          this.perform("update", {
+            gyro: data,
+            draw: draw,
+            lock: lock,
+            size: size
+          })
         })
       })
     }
@@ -31,5 +37,10 @@ function subscribeRemote () {
   const lockToggle = document.getElementById("lock")
   lockToggle.addEventListener("change", e => {
     lock = e.target.checked
+  })
+
+  const sizeSlider = document.getElementById("size")
+  sizeSlider.addEventListener("change", e => {
+    size = e.target.value
   })
 }

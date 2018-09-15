@@ -92,6 +92,7 @@ function subscribeRoom () {
         p2 = points[i + 1]
       }
 
+      tempContext.lineWidth = data["data"]["size"]
       tempContext.stroke()
     } else {
       // Redraw with only one stroke before committing to canvas
