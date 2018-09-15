@@ -75,7 +75,7 @@ function subscribeRoom () {
     // perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves
     // codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
 
-    if (data["data"]["draw"] === true) {
+    if (data["data"]["draw"] === true || data["data"]["lock"]) {
       points.push({ x: pointer.offsetLeft, y: pointer.offsetTop })
 
       let p1 = points[0]
