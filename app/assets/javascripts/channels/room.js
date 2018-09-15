@@ -94,8 +94,11 @@ function subscribeRoom () {
 
       tempContext.stroke()
     } else {
+      // Redraw with only one stroke before committing to canvas
       tempContext.clearRect(0, 0, temp.width, temp.height)
       tempContext.stroke()
+
+      // Commit to canvas
       context.drawImage(temp, 0, 0)
       tempContext.clearRect(0, 0, temp.width, temp.height)
       points.length = 0
