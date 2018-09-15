@@ -20,6 +20,7 @@ function subscribeRoom () {
     },
 
     received: function (data) {
+      data = data["data"]
       updatePointer(data)
       draw(data)
       printDebug(data)
@@ -40,17 +41,16 @@ function subscribeRoom () {
 
   function updatePointer (data) {
     pointer.style.bottom =
-      angleToPosition(data["data"]["gyro"]["do"]["beta"], 25, 75, 50) + "vh"
+      angleToPosition(data["gyro"]["do"]["beta"], 25, 75, 50) + "vh"
 
     pointer.style.right =
-      angleToPosition(data["data"]["gyro"]["do"]["alpha"], 45, 135, 90) + "vw"
+      angleToPosition(data["gyro"]["do"]["alpha"], 45, 135, 90) + "vw"
 
-    pointer.style.transform =
-      "rotate(" + data["data"]["gyro"]["do"]["gamma"] + "deg)"
+    pointer.style.transform = "rotate(" + data["gyro"]["do"]["gamma"] + "deg)"
 
     let acceleration = Math.max(
-      data["data"]["gyro"]["dm"]["beta"],
-      data["data"]["gyro"]["dm"]["alpha"]
+      data["gyro"]["dm"]["beta"],
+      data["gyro"]["dm"]["alpha"]
     )
     acceleration = Math.abs(acceleration)
     acceleration = (acceleration / 100) * 255
@@ -75,10 +75,7 @@ function subscribeRoom () {
     // perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves
     // codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
 
-    if (
-      data["data"]["draw"]["drawing"] === true ||
-      data["data"]["draw"]["lock"]
-    ) {
+    if (data["draw"]["drawing"] === true || data["draw"]["lock"]) {
       points.push({ x: pointer.offsetLeft, y: pointer.offsetTop })
 
       let p1 = points[0]
@@ -95,7 +92,7 @@ function subscribeRoom () {
         p2 = points[i + 1]
       }
 
-      tempContext.lineWidth = data["data"]["draw"]["size"]
+      tempContext.lineWidth = data["draw"]["size"]
       tempContext.stroke()
     } else {
       // Redraw with only one stroke before committing to canvas
@@ -122,7 +119,6 @@ function subscribeRoom () {
 
   function printDebug (data) {
     const view = document.getElementById("debug")
-    data = data["data"]
     view.innerHTML = "Orientation:<br>"
     view.innerHTML += formatDebug(data["gyro"]["do"])
     view.innerHTML += "<br>Draw:<br>"
