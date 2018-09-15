@@ -11,6 +11,12 @@ function subscribeRoom () {
   const context = canvas.getContext("2d")
   const temp = document.getElementById("temp")
   const tempContext = temp.getContext("2d")
+  let tuneCount = 0
+
+  let xmin = 45
+  let xmax = 135
+  let ymin = 25
+  let ymax = 75
 
   const points = []
   App.room = App.cable.subscriptions.create("RoomChannel", {
@@ -21,10 +27,23 @@ function subscribeRoom () {
     received: function (data) {
       data = data["data"]
       updatePointer(data)
-      draw(data)
+      if (data["actions"]["tune"] === true) {
+        showMessage("Tilt your phone toward each target and tap the draw area.")
+        setTargetDisplay(0, true)
+        setPointerDisplay(false)
+        tuneCount = 4
+      } else if (tuneCount > 0 && data["draw"]["release"] === true) {
+        let calibrated = tune(data, tuneCount)
+        if (calibrated === true) {
+          tuneCount -= 1
+        }
+      } else {
+        draw(data)
+      }
       if (data["actions"]["save"] === true) {
         save()
       }
+
       printDebug(data)
     }
   })
@@ -43,10 +62,10 @@ function subscribeRoom () {
 
   function updatePointer (data) {
     pointer.style.bottom =
-      angleToPosition(data["gyro"]["do"]["beta"], 25, 75, 50) + "vh"
+      angleToPosition(data["gyro"]["do"]["beta"], ymin, ymax, 50) + "vh"
 
     pointer.style.right =
-      angleToPosition(data["gyro"]["do"]["alpha"], 45, 135, 90) + "vw"
+      angleToPosition(data["gyro"]["do"]["alpha"], xmin, xmax, 90) + "vw"
 
     pointer.style.transform = "rotate(" + data["gyro"]["do"]["gamma"] + "deg)"
 
@@ -57,6 +76,10 @@ function subscribeRoom () {
     acceleration = Math.abs(acceleration)
     acceleration = (acceleration / 100) * 255
     pointer.style["background-color"] = "hsl(" + acceleration + ", 100%, 50%)"
+  }
+
+  function setPointerDisplay (boolean) {
+    pointer.style.opacity = boolean ? 100 : 0
   }
 
   function angleToPosition (degree, min, max, offset) {
@@ -131,6 +154,50 @@ function subscribeRoom () {
 
   function save () {
     window.open(canvas.toDataURL())
+  }
+
+  function setTargetDisplay (number, visibility) {
+    let targets = document.getElementsByClassName("target")
+    targets.item(number).style.opacity = visibility ? 100 : 0
+  }
+
+  function tune (data, count) {
+    if (data["draw"]["drawing"] === true) {
+      switch (count) {
+        case 4:
+          xmax = (data["gyro"]["do"]["alpha"] + 90) % 360
+          setTargetDisplay(0, false)
+          setTargetDisplay(1, true)
+          return true
+        case 3:
+          ymax = (data["gyro"]["do"]["beta"] + 50) % 360
+          setTargetDisplay(1, false)
+          setTargetDisplay(2, true)
+          return true
+        case 2:
+          xmin = (data["gyro"]["do"]["alpha"] + 90) % 360
+          setTargetDisplay(2, false)
+          setTargetDisplay(3, true)
+          return true
+        case 1:
+          ymin = (data["gyro"]["do"]["beta"] + 50) % 360
+          setTargetDisplay(3, false)
+          hideMessage()
+          setPointerDisplay(true)
+          return true
+        default:
+          return false
+      }
+    }
+  }
+
+  function showMessage (message) {
+    document.getElementById("message-content").innerHTML = message
+    document.getElementById("message").style.opacity = 100
+  }
+
+  function hideMessage () {
+    document.getElementById("message").style.opacity = 0
   }
 
   function printDebug (data) {

@@ -6,13 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 function subscribeRemote () {
-  let draw = false
+  let drawing = false
   let fill = false
   let lock = false
   let size = document.getElementById("size").value
   let color = "black"
   let clear = false
   let save = false
+  let tune = false
+  let release = true
 
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
@@ -23,32 +25,37 @@ function subscribeRemote () {
           this.perform("update", {
             gyro: data,
             draw: {
-              drawing: draw,
+              drawing: drawing,
               lock: lock,
               size: size,
               color: color,
-              fill: fill
+              fill: fill,
+              release: release
             },
             actions: {
               clear: clear,
-              save: save
+              save: save,
+              tune: tune
             }
           })
 
+          release = !drawing
+
           clear = false
           save = false
+          tune = false
           // End loop //
         })
       })
     }
   })
 
-  const drawField = document.getElementById("draw")
-  drawField.addEventListener("touchstart", () => {
-    draw = true
+  const drawingField = document.getElementById("draw")
+  drawingField.addEventListener("touchstart", () => {
+    drawing = true
   })
-  drawField.addEventListener("touchend", () => {
-    draw = false
+  drawingField.addEventListener("touchend", () => {
+    drawing = false
   })
 
   const clearButton = document.getElementById("clear")
@@ -59,6 +66,11 @@ function subscribeRemote () {
   const saveButton = document.getElementById("save")
   saveButton.addEventListener("click", e => {
     save = true
+  })
+
+  const tuneButton = document.getElementById("tune")
+  tuneButton.addEventListener("click", e => {
+    tune = true
   })
 
   const lockToggle = document.getElementById("lock")
