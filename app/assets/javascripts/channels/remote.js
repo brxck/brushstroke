@@ -10,6 +10,7 @@ function subscribeRemote () {
   let lock = false
   let size = document.getElementById("size").value
   let color = "black"
+  let clear = false
 
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
@@ -22,7 +23,8 @@ function subscribeRemote () {
               drawing: draw,
               lock: lock,
               size: size,
-              color: color
+              color: color,
+              clear: clear
             }
           })
         })
@@ -30,12 +32,17 @@ function subscribeRemote () {
     }
   })
 
-  const drawButton = document.getElementById("draw")
-  drawButton.addEventListener("touchstart", () => {
+  const drawField = document.getElementById("draw")
+  drawField.addEventListener("touchstart", () => {
     draw = true
   })
-  drawButton.addEventListener("touchend", () => {
+  drawField.addEventListener("touchend", () => {
     draw = false
+  })
+
+  const clearButton = document.getElementById("clear")
+  clearButton.addEventListener("click", e => {
+    clear = true
   })
 
   const lockToggle = document.getElementById("lock")

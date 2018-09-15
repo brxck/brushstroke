@@ -94,6 +94,9 @@ function subscribeRoom () {
 
       tempContext.lineWidth = data["draw"]["size"]
       tempContext.stroke()
+    } else if (data["draw"]["clear"] === true) {
+      tempContext.clearRect(0, 0, temp.width, temp.height)
+      context.clearRect(0, 0, canvas.width, canvas.height)
     } else {
       // Redraw with only one stroke before committing to canvas
       tempContext.clearRect(0, 0, temp.width, temp.height)
