@@ -1,24 +1,25 @@
 #remote
-.container.has-text-centered
-  br
   h1.title = @room.code
 
-  .field
-    button#draw.button.is-large.is-dark.is-rounded draw
-
-  .field
+  #buttons
     input#lock.switch.is-rounded.is-large.is-info(type="checkbox")
-    label.label(for="lock") Lock
+    label.label(for="lock") lock
+    .field.is-grouped
+      button.button.is-rounded.is-medium.is-info#save save
+      button.button.is-rounded.is-medium.is-danger#clear clear
 
-  .field
-    input#size.slider.is-large.is-dark.is-circle.is-fullwidth(type="range" min="1" max="50" value="10")
-  
+  input#size.slider.is-large.is-info.is-circle(type="range" min="1" max="50" value="10")
+
   .field#color
-    input#white(type="radio" name="color" value="white") white
-    input#black(type="radio" name="color" value="black" checked="true") black
-    input#blue(type="radio" name="color" value="blue") blue
-    input#green(type="radio" name="color" value="green") green
-    input#yellow(type="radio" name="color" value="yellow") yellow
-    input#orange(type="radio" name="color" value="orange") orange
-    input#red(type="radio" name="color" value="red") red
-    input#purple(type="radio" name="color" value="purple") purple   
+    input#white(type="radio" name="color" value="#ffffff" style="--color: #ffffff")
+    input#black(type="radio" name="color" value="#50514f" style="--color: #50514f")
+    input#blue(type="radio" name="color" value="#247ba0" style="--color: #247ba0")
+    input#green(type="radio" name="color" value="#70c1b3" style="--color: #70c1b3")
+    input#yellow(type="radio" name="color" value="#ffe066" style="--color: #ffe066")
+    input#orange(type="radio" name="color" value="#e8a661" style="--color: #e8a661")
+    input#red(type="radio" name="color" value="#f25f5c" style="--color: #f25f5c")
+    input#purple(type="radio" name="color" value="#8693ab" style="--color: #8693ab")
+
+  #draw
+    span tap to draw
+

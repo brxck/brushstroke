@@ -13,18 +13,6 @@ function subscribeRoom () {
   const tempContext = temp.getContext("2d")
 
   const points = []
-
-  const colors = {
-    white: "#FFFFFF",
-    black: "#50514f",
-    blue: "#247ba0",
-    green: "#70c1b3",
-    yellow: "#ffe066",
-    orange: "#e8a661",
-    red: "#f25f5c",
-    purple: "#8693ab"
-  }
-
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
       readyCanvases()
@@ -82,7 +70,7 @@ function subscribeRoom () {
   }
 
   function draw (data) {
-    tempContext.strokeStyle = colors[data["draw"]["color"]]
+    tempContext.strokeStyle = data["draw"]["color"]
     // Draw smooth lines using bezier curves, mishmash of these two sources:
     // perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves
     // codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
