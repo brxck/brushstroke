@@ -11,22 +11,31 @@ function subscribeRemote () {
   let size = document.getElementById("size").value
   let color = "black"
   let clear = false
+  let save = false
 
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
       const gyro = new GyroNorm()
       gyro.init().then(() => {
         gyro.start(data => {
+          // Start loop //
           this.perform("update", {
             gyro: data,
             draw: {
               drawing: draw,
               lock: lock,
               size: size,
-              color: color,
-              clear: clear
+              color: color
+            },
+            actions: {
+              clear: clear,
+              save: save
             }
           })
+
+          clear = false
+          save = false
+          // End loop //
         })
       })
     }
@@ -43,6 +52,11 @@ function subscribeRemote () {
   const clearButton = document.getElementById("clear")
   clearButton.addEventListener("click", e => {
     clear = true
+  })
+
+  const saveButton = document.getElementById("save")
+  saveButton.addEventListener("click", e => {
+    save = true
   })
 
   const lockToggle = document.getElementById("lock")

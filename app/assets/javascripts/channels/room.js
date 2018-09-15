@@ -22,6 +22,9 @@ function subscribeRoom () {
       data = data["data"]
       updatePointer(data)
       draw(data)
+      if (data["actions"]["save"] === true) {
+        save()
+      }
       printDebug(data)
     }
   })
@@ -94,7 +97,7 @@ function subscribeRoom () {
 
       tempContext.lineWidth = data["draw"]["size"]
       tempContext.stroke()
-    } else if (data["draw"]["clear"] === true) {
+    } else if (data["actions"]["clear"] === true) {
       tempContext.clearRect(0, 0, temp.width, temp.height)
       context.clearRect(0, 0, canvas.width, canvas.height)
     } else {
@@ -120,12 +123,18 @@ function subscribeRoom () {
     }
   }
 
+  function save () {
+    window.open(canvas.toDataURL())
+  }
+
   function printDebug (data) {
     const view = document.getElementById("debug")
     view.innerHTML = "Orientation:<br>"
     view.innerHTML += formatDebug(data["gyro"]["do"])
     view.innerHTML += "<br>Draw:<br>"
     view.innerHTML += formatDebug(data["draw"])
+    view.innerHTML += "<br>Actions:<br>"
+    view.innerHTML += formatDebug(data["actions"])
   }
 
   function formatDebug (data) {
