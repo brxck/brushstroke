@@ -75,7 +75,10 @@ function subscribeRoom () {
     // perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves
     // codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
 
-    if (data["data"]["draw"] === true || data["data"]["lock"]) {
+    if (
+      data["data"]["draw"]["drawing"] === true ||
+      data["data"]["draw"]["lock"]
+    ) {
       points.push({ x: pointer.offsetLeft, y: pointer.offsetTop })
 
       let p1 = points[0]
@@ -92,7 +95,7 @@ function subscribeRoom () {
         p2 = points[i + 1]
       }
 
-      tempContext.lineWidth = data["data"]["size"]
+      tempContext.lineWidth = data["data"]["draw"]["size"]
       tempContext.stroke()
     } else {
       // Redraw with only one stroke before committing to canvas
@@ -119,17 +122,19 @@ function subscribeRoom () {
 
   function printDebug (data) {
     const view = document.getElementById("debug")
-    data = data["data"]["gyro"]
-    view.innerHTML = `
-      Orientation:<br>
-      alpha: ${data["do"]["alpha"]}<br>
-      beta: ${data["do"]["beta"]}<br>
-      gamma: ${data["do"]["gamma"]}<br>
-      <br>
-      Motion:<br>
-      x: ${data["dm"]["x"]}<br>
-      y: ${data["dm"]["y"]}<br>
-      z: ${data["dm"]["z"]}<br>
-    `
+    data = data["data"]
+    view.innerHTML = "Orientation:<br>"
+    view.innerHTML += formatDebug(data["gyro"]["do"])
+    view.innerHTML += "<br>Draw:<br>"
+    view.innerHTML += formatDebug(data["draw"])
+  }
+
+  function formatDebug (data) {
+    let string = ""
+    let key, value
+    for ([key, value] of Object.entries(data)) {
+      string += `${key}: ${value}<br>`
+    }
+    return string
   }
 }

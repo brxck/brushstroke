@@ -17,9 +17,12 @@ function subscribeRemote () {
         gyro.start(data => {
           this.perform("update", {
             gyro: data,
-            draw: draw,
+            draw: {
+              drawing: draw,
             lock: lock,
-            size: size
+              size: size,
+              color: color
+            }
           })
         })
       })
