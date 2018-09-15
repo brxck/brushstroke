@@ -9,10 +9,14 @@ function subscribeRoom () {
   const pointer = document.getElementById("pointer")
   const canvas = document.getElementById("canvas")
   const context = canvas.getContext("2d")
+  const temp = document.getElementById("temp")
+  const tempContext = temp.getContext("2d")
+
+  const points = []
 
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
-      readyCanvas()
+      readyCanvases()
     },
 
     received: function (data) {
@@ -22,14 +26,16 @@ function subscribeRoom () {
     }
   })
 
-  function readyCanvas () {
+  function readyCanvases () {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
+    temp.width = window.innerWidth
+    temp.height = window.innerHeight
 
-    context.moveTo(canvas.width / 2, canvas.height / 2)
-    context.lineWidth = 10
-    context.lineCap = "round"
-    context.lineJoin = "round"
+    tempContext.moveTo(canvas.width / 2, canvas.height / 2)
+    tempContext.lineWidth = 10
+    tempContext.lineCap = "round"
+    tempContext.lineJoin = "round"
   }
 
   function updatePointer (data) {
@@ -65,11 +71,41 @@ function subscribeRoom () {
   }
 
   function draw (data) {
+    // Draw smooth lines using bezier curves, mishmash of these two sources:
+    // perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves
+    // codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
+
     if (data["data"]["draw"] === true) {
-      context.lineTo(pointer.offsetLeft, pointer.offsetTop)
-      context.stroke()
+      points.push({ x: pointer.offsetLeft, y: pointer.offsetTop })
+
+      let p1 = points[0]
+      let p2 = points[1]
+
+      tempContext.clearRect(0, 0, tempContext.width, tempContext.height)
+      tempContext.beginPath()
+      tempContext.moveTo(p1.x, p1.y)
+
+      for (let i = 1; i < points.length; i++) {
+        let midpoint = calcMidpoint(p1, p2)
+        tempContext.quadraticCurveTo(p1.x, p1.y, midpoint.x, midpoint.y)
+        p1 = points[i]
+        p2 = points[i + 1]
+      }
+
+      tempContext.stroke()
     } else {
+      context.drawImage(temp, 0, 0)
+      tempContext.clearRect(0, 0, temp.width, temp.height)
+      points.length = 0
+
       context.moveTo(pointer.offsetLeft, pointer.offsetTop)
+    }
+  }
+
+  function calcMidpoint (start, end) {
+    return {
+      x: start.x + (end.x - start.x) / 2,
+      y: start.y + (end.y - start.y) / 2
     }
   }
 

@@ -5,13 +5,13 @@
   height: 10px;
   background-color: hsl(100, 100%, 50%);
   display: block;
-  transition: all 0.1s;
 
   right: 50vw;
   bottom: 50vh;
 }
 
-#canvas {
+#canvas,
+#temp {
   position: absolute;
   width: 100vw;
   height: 100vh;
