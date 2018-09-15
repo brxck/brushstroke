@@ -5,8 +5,20 @@
 
   .field
     button#draw.button.is-large.is-dark.is-rounded draw
+
   .field
     input#lock.switch.is-rounded.is-large.is-info(type="checkbox")
     label.label(for="lock") Lock
+
   .field
     input#size.slider.is-large.is-dark.is-circle.is-fullwidth(type="range" min="1" max="50" value="10")
+  
+  .field#color
+    input#white(type="radio" name="color" value="white") white
+    input#black(type="radio" name="color" value="black" checked="true") black
+    input#blue(type="radio" name="color" value="blue") blue
+    input#green(type="radio" name="color" value="green") green
+    input#yellow(type="radio" name="color" value="yellow") yellow
+    input#orange(type="radio" name="color" value="orange") orange
+    input#red(type="radio" name="color" value="red") red
+    input#purple(type="radio" name="color" value="purple") purple   

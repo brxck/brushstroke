@@ -9,6 +9,7 @@ function subscribeRemote () {
   let draw = false
   let lock = false
   let size = document.getElementById("size").value
+  let color = "black"
 
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
@@ -19,7 +20,7 @@ function subscribeRemote () {
             gyro: data,
             draw: {
               drawing: draw,
-            lock: lock,
+              lock: lock,
               size: size,
               color: color
             }
@@ -46,4 +47,11 @@ function subscribeRemote () {
   sizeSlider.addEventListener("change", e => {
     size = e.target.value
   })
+
+  const colorRadios = document.getElementById("color")
+  for (let i = 0; i < colorRadios.children.length; i++) {
+    colorRadios.children.item(i).addEventListener("change", e => {
+      color = e.target.value
+    })
+  }
 }
