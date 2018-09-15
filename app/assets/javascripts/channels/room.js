@@ -94,6 +94,8 @@ function subscribeRoom () {
 
       tempContext.stroke()
     } else {
+      tempContext.clearRect(0, 0, temp.width, temp.height)
+      tempContext.stroke()
       context.drawImage(temp, 0, 0)
       tempContext.clearRect(0, 0, temp.width, temp.height)
       points.length = 0
