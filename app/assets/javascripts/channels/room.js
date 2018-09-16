@@ -12,6 +12,7 @@ function subscribeRoom () {
   const temp = document.getElementById("temp")
   const tempContext = temp.getContext("2d")
   let tuneCount = 0
+  let connection = false
 
   let xmin = 45
   let xmax = 135
@@ -22,6 +23,12 @@ function subscribeRoom () {
   App.room = App.cable.subscriptions.create("RoomChannel", {
     connected: function () {
       readyCanvases()
+      showMessage(
+        `Your code is: <strong>${
+          document.getElementById("room").dataset.code
+        }</strong>
+        <br>Point your phone at the center of the screen and connect it.`
+      )
     },
 
     received: function (data) {
@@ -52,6 +59,12 @@ function subscribeRoom () {
         context.clearRect(0, 0, canvas.width, canvas.height)
       } else {
         draw(data)
+      }
+
+      // Hide prompt after connection
+      if (connection === false) {
+        connection = true
+        hideMessage()
       }
 
       // printDebug(data)
