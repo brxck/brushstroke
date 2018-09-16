@@ -1,4 +1,13 @@
-h1.title Find
-= form_tag("/search")
-  = text_field_tag(:code)
-  = submit_tag("Go")
+.contain
+  h1.title.has-text-centered Brushstroke
+
+  p.has-text-centered Enter your four-character room code.
+
+  = form_tag("/search")
+    .field.has-addons
+      = text_field_tag(:code, "", class: "input")
+      = submit_tag("Go", class: "button is-info")
+
+  - flash.each do |name, message|
+    .message(class="is-#{name}")
+      .message-body = message
