@@ -1,10 +1,10 @@
 <h1 align="center">
-  <img src="./index.png">
+  <img src="./header.png">
 </h1>
 
 # [Brushstroke]()
 
-<img align="right" src="./phone_screenshot.jpg">
+<img align="right" src="./screenshot.png">
 
 Paint your screen with your phone! 
 
