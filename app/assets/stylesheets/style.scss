@@ -135,6 +135,19 @@ body {
   margin-bottom: -37.5px;
   bottom: 0;
   left: 50vw;
+
+  &,
+  div {
+    border-radius: 0;
+    border-top-left-radius: 80px;
+    border-top-right-radius: 80px;
+  }
+
+  div {
+    margin-top: 15px;
+    height: 22px;
+    border-bottom: none;
+  }
 }
 
 #color input {
