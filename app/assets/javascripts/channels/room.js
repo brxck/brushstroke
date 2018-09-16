@@ -91,9 +91,15 @@ function subscribeRoom () {
     pointer.style.right =
       angleToPosition(data["gyro"]["do"]["alpha"], xmin, xmax, 90) + "vw"
     pointer.style.transform = "rotate(" + data["gyro"]["do"]["gamma"] + "deg)"
-    pointer.style["background-color"] = data["draw"]["color"]
     pointer.style.width = data["draw"]["size"] + "px"
     pointer.style.height = data["draw"]["size"] + "px"
+
+    pointer.style["background-color"] = data["draw"]["color"]
+    if (data["draw"]["color"] === "#ffffff") {
+      pointer.style.borderColor = "#000000"
+    } else {
+      pointer.style.borderColor = data["draw"]["color"]
+    }
   }
 
   function setPointerDisplay (boolean) {
