@@ -1,11 +1,10 @@
 <h1>
   <img align="center" src="./header.png">
+  <br>
   <a href="#">Brushstroke</a>
 </h1>
 
 <img align="right" src="./screenshot.png">
-
-## Getting Started
 
 Paint your screen with your phone! 
 
