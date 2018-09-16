@@ -1,9 +1,11 @@
-<h1 align="center">
-  <img src="./header.png">
+<h1>
+  <img align="center" src="./header.png">
   <a href="#">Brushstroke</a>
 </h1>
 
 <img align="right" src="./screenshot.png">
+
+## Getting Started
 
 Paint your screen with your phone! 
 
@@ -12,6 +14,13 @@ Point your phone at the center of the screen, and enter the room code from your 
 Now you are connected and ready to paint!
 
 > Protip: Use the `tune` button to better calibrate Brushstroke to your devices.
+
+## Features
+
+- Live connection between screen and phone using WebSockets with Action Cable
+- Calibrate to your phone, display size, and distance with only four taps
+- Smooth lines using [quadratic curves](perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves)
+- Save the images you create
 
 ## Development & Deployment
 
