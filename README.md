@@ -1,6 +1,5 @@
 <h1>
   <img align="center" src="./header.png">
-  <br>
   <a href="#">Brushstroke</a>
 </h1>
 
