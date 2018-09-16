@@ -21,7 +21,7 @@ class RoomsController < ApplicationController
   end
 
   def search
-    @room = Room.find_by(code: params[:code])
+    @room = Room.find_by(code: params[:code].downcase)
     if @room
       redirect_to @room
     else
