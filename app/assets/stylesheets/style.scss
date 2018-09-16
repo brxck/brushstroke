@@ -8,6 +8,7 @@ body {
 }
 
 #pointer {
+  transition: all 0.2ms;
   z-index: 100;
   position: absolute;
   width: 10px;
@@ -72,7 +73,7 @@ body {
 }
 
 #color {
-  background-color: silver;
+  background-color: lightgray;
   width: 100%;
   display: flex;
   justify-content: center;
