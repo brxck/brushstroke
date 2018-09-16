@@ -1,8 +1,7 @@
 <h1 align="center">
   <img src="./header.png">
+  <a href="#">Brushstroke</a>
 </h1>
-
-# [Brushstroke]()
 
 <img align="right" src="./screenshot.png">
 
