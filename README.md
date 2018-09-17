@@ -49,10 +49,8 @@ Prerequisite: set up [Postgres.](https://www.digitalocean.com/community/tutorial
 4. Run server:
 
         $ rails server
+        
+## Todo
 
-To drop the production database and reseed:
-
-        $ heroku pg:reset DATABASE_URL
-        $ heroku run rails db:migrate
-        $ heroku run rails db:seed
-
+- Periodically remove old rooms ([Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler))
+- Add support for multiple painters in one room
