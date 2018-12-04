@@ -15,29 +15,25 @@ function subscribeRemote () {
   let action
 
   App.room = App.cable.subscriptions.create("RoomChannel", {
-    connected: function () {
+    connected: async function () {
       const gyro = new GyroNorm()
-      gyro.init().then(() => {
-        gyro.start(data => {
-          // Start loop //
-          this.perform("update", {
-            gyro: data,
-            draw: {
-              drawing: drawing,
-              lock: lock,
-              size: size,
-              color: color,
-              fill: fill,
-              release: release,
-              action: action
-            }
-          })
-
-          release = !drawing
-
-          action = null
-          // End loop //
+      await gyro.init()
+      gyro.start(data => {
+        this.perform("update", {
+          gyro: data,
+          draw: {
+            drawing,
+            lock,
+            size,
+            color,
+            fill,
+            release,
+            action
+          }
         })
+
+        release = !drawing
+        action = null
       })
     }
   })
@@ -81,9 +77,9 @@ function subscribeRemote () {
   })
 
   const colorRadios = document.getElementById("color")
-  for (let i = 0; i < colorRadios.children.length; i++) {
-    colorRadios.children.item(i).addEventListener("change", e => {
+  colorRadios.children.forEach(radio => {
+    radio.addEventListener("change", e => {
       color = e.target.value
     })
-  }
+  })
 }

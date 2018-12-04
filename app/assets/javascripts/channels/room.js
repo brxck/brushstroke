@@ -31,18 +31,17 @@ function subscribeRoom () {
       )
     },
 
-    received: function (data) {
-      data = data["data"]
+    received: function ({ data }) {
       updatePointer(data)
 
       // Begin calibrating
-      if (data["draw"]["action"] === "tune") {
+      if (data.draw.action === "tune") {
         showMessage("Tilt your phone toward each target and tap the draw area.")
         setTargetDisplay(0, true)
         setPointerDisplay(false)
         tuneCount = 4
         // Calibrate targets
-      } else if (tuneCount > 0 && data["draw"]["release"] === true) {
+      } else if (tuneCount > 0 && data.data.release === true) {
         let calibrated = tune(data, tuneCount)
         if (calibrated === true) {
           tuneCount -= 1
@@ -52,9 +51,9 @@ function subscribeRoom () {
           hideMessage()
           setPointerDisplay(true)
         }
-      } else if (data["draw"]["action"] === "save") {
+      } else if (data.draw.action === "save") {
         save()
-      } else if (data["draw"]["action"] === "clear") {
+      } else if (data.draw.action === "clear") {
         tempContext.clearRect(0, 0, temp.width, temp.height)
         context.clearRect(0, 0, canvas.width, canvas.height)
       } else {
@@ -87,18 +86,18 @@ function subscribeRoom () {
 
   function updatePointer (data) {
     pointer.style.bottom =
-      angleToPosition(data["gyro"]["do"]["beta"], ymin, ymax, 50) + "vh"
+      angleToPosition(data.gyro.do.beta, ymin, ymax, 50) + "vh"
     pointer.style.right =
-      angleToPosition(data["gyro"]["do"]["alpha"], xmin, xmax, 90) + "vw"
-    pointer.style.transform = "rotate(" + data["gyro"]["do"]["gamma"] + "deg)"
-    pointer.style.width = data["draw"]["size"] + "px"
-    pointer.style.height = data["draw"]["size"] + "px"
+      angleToPosition(data.gyro.do.alpha, xmin, xmax, 90) + "vw"
+    pointer.style.transform = "rotate(" + data.gyro.do.gamma + "deg)"
+    pointer.style.width = data.draw.size + "px"
+    pointer.style.height = data.draw.size + "px"
 
-    pointer.style["background-color"] = data["draw"]["color"]
-    if (data["draw"]["color"] === "#ffffff") {
+    pointer.style.backgroundColor = data.draw.color
+    if (data.draw.color === "#ffffff") {
       pointer.style.borderColor = "#000000"
     } else {
-      pointer.style.borderColor = data["draw"]["color"]
+      pointer.style.borderColor = data.draw.color
     }
   }
 
@@ -122,13 +121,13 @@ function subscribeRoom () {
   }
 
   function draw (data) {
-    tempContext.strokeStyle = data["draw"]["color"]
-    tempContext.fillStyle = data["draw"]["color"]
+    tempContext.strokeStyle = data.draw.color
+    tempContext.fillStyle = data.draw.color
     // Draw smooth lines using quadratic curves, mishmash of these two sources:
     // perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves
     // codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
 
-    if (data["draw"]["drawing"] === true || data["draw"]["lock"]) {
+    if (data.draw.drawing === true || data.draw.lock) {
       points.push({ x: pointer.offsetLeft, y: pointer.offsetTop })
 
       let p1 = points[0]
@@ -145,12 +144,12 @@ function subscribeRoom () {
         p2 = points[i + 1]
       }
 
-      tempContext.lineWidth = data["draw"]["size"]
+      tempContext.lineWidth = data.draw.size
       tempContext.stroke()
     } else {
       // Redraw with only one stroke before committing to canvas
       tempContext.clearRect(0, 0, temp.width, temp.height)
-      if (data["draw"]["fill"] === true) {
+      if (data.draw.fill === true) {
         tempContext.closePath()
         tempContext.fill()
       }
@@ -183,25 +182,25 @@ function subscribeRoom () {
   }
 
   function tune (data, count) {
-    if (data["draw"]["drawing"] === true) {
+    if (data.draw.drawing === true) {
       switch (count) {
         case 4:
-          xmax = (data["gyro"]["do"]["alpha"] + 90) % 360
+          xmax = (data.gyro.do.alpha + 90) % 360
           setTargetDisplay(0, false)
           setTargetDisplay(1, true)
           return true
         case 3:
-          ymax = (data["gyro"]["do"]["beta"] + 50) % 360
+          ymax = (data.gyro.do.beta + 50) % 360
           setTargetDisplay(1, false)
           setTargetDisplay(2, true)
           return true
         case 2:
-          xmin = (data["gyro"]["do"]["alpha"] + 90) % 360
+          xmin = (data.gyro.do.alpha + 90) % 360
           setTargetDisplay(2, false)
           setTargetDisplay(3, true)
           return true
         case 1:
-          ymin = (data["gyro"]["do"]["beta"] + 50) % 360
+          ymin = (data.gyro.do.beta + 50) % 360
           setTargetDisplay(3, false)
           return true
         default:
@@ -222,9 +221,9 @@ function subscribeRoom () {
   function printDebug (data) {
     const view = document.getElementById("debug")
     view.innerHTML = "Orientation:<br>"
-    view.innerHTML += formatDebug(data["gyro"]["do"])
+    view.innerHTML += formatDebug(data.gyro.do)
     view.innerHTML += "<br>Draw:<br>"
-    view.innerHTML += formatDebug(data["draw"])
+    view.innerHTML += formatDebug(data.data)
   }
 
   function formatDebug (data) {
